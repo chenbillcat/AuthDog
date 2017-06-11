@@ -1,8 +1,12 @@
 from pecan import expose, redirect
 from webob.exc import status_map
 
+from domain import DomainsController
+
 
 class RootController(object):
+
+    domains = DomainsController()
 
     @expose(generic=True, template='index.html')
     def index(self):
@@ -20,3 +24,4 @@ class RootController(object):
             status = 500
         message = getattr(status_map.get(status), 'explanation', '')
         return dict(status=status, message=message)
+

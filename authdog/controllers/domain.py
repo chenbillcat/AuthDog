@@ -11,7 +11,7 @@ class DomainsController(RestController):
         return dict()
 
     @expose("json") 
-    def get_one(self, id):
+    def get_one(self, domain_id):
         pass
         # return "/domains/%s"%id
 
@@ -22,13 +22,11 @@ class DomainsController(RestController):
 
     @expose("json")
     @expose(method="PATCH")
-    def patch(self, id):
+    def patch(self, domain_id):
         pass
         # return "/domains"
 
     @expose("json")
-    def delete(self, id):
+    def delete(self, domain_id):
         pass
         # return "/domains/id"
-    
-    

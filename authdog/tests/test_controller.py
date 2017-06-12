@@ -89,6 +89,10 @@ class TestGroupsController(FunctionalTest):
         resp = self.app.get('/groups/1/people', expect_errors=True)
         assert resp.status_int == 404
 
+    def test_get_not_found(self):
+        resp = self.app.get('/groups/users', expect_errors=True)
+        assert resp.status_int == 404
+
 
 class TestGroupsUsersController(FunctionalTest):
 

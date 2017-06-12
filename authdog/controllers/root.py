@@ -1,9 +1,9 @@
 from pecan import expose, redirect
 from webob.exc import status_map
 
-from auth import AuthController
-from domain import DomainsController
-from .group import GroupsController
+from authdog.controllers.auth import AuthController
+from authdog.controllers.domain import DomainsController
+from authdog.controllers.group import GroupsController
 
 
 class RootController(object):
@@ -28,4 +28,3 @@ class RootController(object):
             status = 500
         message = getattr(status_map.get(status), 'explanation', '')
         return dict(status=status, message=message)
-

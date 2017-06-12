@@ -138,3 +138,50 @@ class TestProjectsController(FunctionalTest):
     def test_delete(self):
         resp = self.app.delete('/projects/1')
         assert resp.status_int == 200
+
+
+class TestUsersController(FunctionalTest):
+
+    def test_get_all(self):
+        resp = self.app.get('/users')
+        assert resp.status_int == 200
+
+    def test_post(self):
+        resp = self.app.post('/users', params={})
+        assert resp.status_int == 200
+
+    def test_get_one(self):
+        resp = self.app.get('/users/1')
+        assert resp.status_int == 200
+
+    def test_patch(self):
+        resp = self.app.patch('/users/1')
+        assert resp.status_int == 200
+
+    def test_delete(self):
+        resp = self.app.patch('/users/1')
+        assert resp.status_int == 200
+
+    def test_get_users_projects(self):
+        resp = self.app.get('/users/1/projects')
+        assert resp.status_int == 200
+
+    def test_get_users_groups(self):
+        resp = self.app.get('/users/1/groups')
+        assert resp.status_int == 200
+
+    def test_get_users_projects_not_found(self):
+        resp = self.app.get('/users/1/projects/1', expect_errors=True)
+        assert resp.status_int == 404
+
+    def test_get_users_groups_not_found(self):
+        resp = self.app.get('/users/1/groups/1', expect_errors=True)
+        assert resp.status_int == 404
+
+    def test_get_not_found(self):
+        resp = self.app.get('/users/projects', expect_errors=True)
+        assert resp.status_int == 404
+
+    def test_get_not_found(self):
+        resp = self.app.get('/users/groups', expect_errors=True)
+        assert resp.status_int == 404

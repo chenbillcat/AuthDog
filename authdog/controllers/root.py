@@ -5,6 +5,7 @@ from authdog.controllers.auth import AuthController
 from authdog.controllers.domain import DomainsController
 from authdog.controllers.group import GroupsController
 from authdog.controllers.project import ProjectsController
+from authdog.controllers.user import UsersController
 
 
 class RootController(object):
@@ -13,6 +14,7 @@ class RootController(object):
     domains = DomainsController()
     groups = GroupsController()
     projects = ProjectsController()
+    users = UsersController()
 
     @expose(generic=True, template='index.html')
     def index(self):

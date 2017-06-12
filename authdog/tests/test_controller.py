@@ -37,6 +37,7 @@ class TestTokensController(FunctionalTest):
 
 
 class TestDomainsController(FunctionalTest):
+
     def test_get_all(self):
         resp = self.app.get('/domains')
         assert resp.status_int == 200
@@ -59,4 +60,54 @@ class TestDomainsController(FunctionalTest):
 
     def test_get_notfound(self):
         resp = self.app.get('/domains/1/books', expect_errors=True)
+        assert resp.status_int == 404
+
+
+class TestGroupsController(FunctionalTest):
+
+    def test_get_all(self):
+        resp = self.app.get('/groups')
+        assert resp.status_int == 200
+
+    def test_post(self):
+        resp = self.app.post('/groups', params={})
+        assert resp.status_int == 200
+
+    def test_get_one(self):
+        resp = self.app.get('/groups/1')
+        assert resp.status_int == 200
+
+    def test_patch(self):
+        resp = self.app.patch('/groups/1')
+        assert resp.status_int == 200
+
+    def test_delete(self):
+        resp = self.app.delete('/groups/1')
+        assert resp.status_int == 200
+
+    def test_get_not_found(self):
+        resp = self.app.get('/groups/1/people', expect_errors=True)
+        assert resp.status_int == 404
+
+
+class TestGroupsUsersController(FunctionalTest):
+
+    def test_get(self):
+        resp = self.app.get('/groups/1/users')
+        assert resp.status_int == 200
+
+    def test_put(self):
+        resp = self.app.put('/groups/1/users/2')
+        assert resp.status_int == 200
+
+    def test_head(self):
+        resp = self.app.put('/groups/1/users/2')
+        assert resp.status_int == 200
+
+    def test_delete(self):
+        resp = self.app.delete('/groups/1/users/2')
+        assert resp.status_int == 200
+
+    def test_get_not_found(self):
+        resp = self.app.get('/groups/1/users/2/hello', expect_errors=True)
         assert resp.status_int == 404

@@ -3,12 +3,14 @@ from webob.exc import status_map
 
 from auth import AuthController
 from domain import DomainsController
+from .group import GroupsController
 
 
 class RootController(object):
 
     auth = AuthController()
     domains = DomainsController()
+    groups = GroupsController()
 
     @expose(generic=True, template='index.html')
     def index(self):

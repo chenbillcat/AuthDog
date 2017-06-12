@@ -101,7 +101,7 @@ class TestGroupsUsersController(FunctionalTest):
         assert resp.status_int == 200
 
     def test_head(self):
-        resp = self.app.put('/groups/1/users/2')
+        resp = self.app.head('/groups/1/users/2')
         assert resp.status_int == 200
 
     def test_delete(self):

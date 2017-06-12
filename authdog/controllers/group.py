@@ -15,8 +15,8 @@ class UsersController(RestController):
         pass
         return dict()
 
-    @expose(method="HEAD")
     @expose('json')
+    @expose(method="HEAD")
     def head(self, group_id, user_id):
         pass
         return dict()

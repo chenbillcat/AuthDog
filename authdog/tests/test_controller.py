@@ -178,10 +178,37 @@ class TestUsersController(FunctionalTest):
         resp = self.app.get('/users/1/groups/1', expect_errors=True)
         assert resp.status_int == 404
 
-    def test_get_not_found(self):
+    def test_get_not_found_p(self):
         resp = self.app.get('/users/projects', expect_errors=True)
         assert resp.status_int == 404
 
-    def test_get_not_found(self):
+    def test_get_not_found_g(self):
         resp = self.app.get('/users/groups', expect_errors=True)
+        assert resp.status_int == 404
+
+
+class TestRolesController(FunctionalTest):
+
+    def test_get_all(self):
+        resp = self.app.get('/roles')
+        assert resp.status_int == 200
+
+    def test_post(self):
+        resp = self.app.post('/roles', params={})
+        assert resp.status_int == 200
+
+    def test_get_one(self):
+        resp = self.app.get('/roles/1')
+        assert resp.status_int == 200
+
+    def test_patch(self):
+        resp = self.app.patch('/roles/1')
+        assert resp.status_int == 200
+
+    def test_delete(self):
+        resp = self.app.delete('/roles/1')
+        assert resp.status_int == 200
+
+    def test_not_found(self):
+        resp = self.app.get('/roles/1/what', expect_errors=True)
         assert resp.status_int == 404

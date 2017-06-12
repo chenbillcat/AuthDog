@@ -89,7 +89,7 @@ class TestGroupsController(FunctionalTest):
         resp = self.app.get('/groups/1/people', expect_errors=True)
         assert resp.status_int == 404
 
-    def test_get_not_found(self):
+    def test_get_not_found_users(self):
         resp = self.app.get('/groups/users', expect_errors=True)
         assert resp.status_int == 404
 
@@ -115,3 +115,26 @@ class TestGroupsUsersController(FunctionalTest):
     def test_get_not_found(self):
         resp = self.app.get('/groups/1/users/2/hello', expect_errors=True)
         assert resp.status_int == 404
+
+
+class TestProjectsController(FunctionalTest):
+
+    def test_get_all(self):
+        resp = self.app.get('/projects')
+        assert resp.status_int == 200
+
+    def test_post(self):
+        resp = self.app.post('/projects')
+        assert resp.status_int == 200
+
+    def test_get_one(self):
+        resp = self.app.get('/projects/1')
+        assert resp.status_int == 200
+
+    def test_patch(self):
+        resp = self.app.patch('/projects/1')
+        assert resp.status_int == 200
+
+    def test_delete(self):
+        resp = self.app.delete('/projects/1')
+        assert resp.status_int == 200

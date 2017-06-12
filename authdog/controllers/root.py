@@ -4,6 +4,7 @@ from webob.exc import status_map
 from authdog.controllers.auth import AuthController
 from authdog.controllers.domain import DomainsController
 from authdog.controllers.group import GroupsController
+from authdog.controllers.project import ProjectsController
 
 
 class RootController(object):
@@ -11,6 +12,7 @@ class RootController(object):
     auth = AuthController()
     domains = DomainsController()
     groups = GroupsController()
+    projects = ProjectsController()
 
     @expose(generic=True, template='index.html')
     def index(self):

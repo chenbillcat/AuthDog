@@ -159,7 +159,7 @@ class TestUsersController(FunctionalTest):
         assert resp.status_int == 200
 
     def test_delete(self):
-        resp = self.app.patch('/users/1')
+        resp = self.app.delete('/users/1')
         assert resp.status_int == 200
 
     def test_get_users_projects(self):

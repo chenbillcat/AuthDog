@@ -1,11 +1,13 @@
 from pecan import expose, redirect
 from webob.exc import status_map
 
+from auth import AuthController
 from domain import DomainsController
 
 
 class RootController(object):
 
+    auth = AuthController()
     domains = DomainsController()
 
     @expose(generic=True, template='index.html')

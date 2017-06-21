@@ -23,3 +23,12 @@ app = {
 #
 # All configurations are accessible at::
 # pecan.conf
+
+# Bindings and options to pass to SQLAlchemy's ``create_engine``
+sqlalchemy = {
+    'url': 'mysql+pymysql://root:qazwsx@localhost:3306/test',
+    'echo': False,
+    'echo_pool': False,
+    'pool_recycle': 3600,
+    'encoding': 'utf-8'
+}

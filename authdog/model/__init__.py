@@ -1,4 +1,8 @@
+# coding:utf-8
 from pecan import conf  # noqa
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 def init_model():
@@ -13,3 +17,4 @@ def init_model():
     see https://pecan.readthedocs.io/en/latest/databases.html
     """
     pass
+

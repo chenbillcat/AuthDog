@@ -9,16 +9,15 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.sql.expression import text
 
 from authdog.tests import FunctionalTest
-from authdog.model import SessionFactory, DatabaseEngine
-from authdog.model import api
+from authdog.model import connection
 from authdog.model import default as default_model
 
 
 class TestCreateDefaultTables(FunctionalTest):
 
     def test_create_default_all(self):
-        engine = api.get_engine()
-        session = api.get_session()
+        engine = connection.get_engine()
+        session = connection.get_session()
         default_model.Base.metadata.create_all(engine)
 
         domain = default_model.Domain(id="1", name="test_domain", enabled=1)

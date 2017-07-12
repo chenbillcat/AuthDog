@@ -59,6 +59,7 @@ class Domain(Base, BaseDict):
 
     project = relationship("Project", backref="domain")
     group = relationship("Group", backref="domain")
+    user = relationship("User", backref="domain")
 
     def __repr__(self):
         return "<Domain(id='%s', name='%s', enabled='%s')>" % (self.id, self.name, self.enabled)
@@ -85,21 +86,22 @@ class Project(Base, BaseDict):
 
 class User(Base, BaseDict):
     __tablename__ = "user"
-    _attributes = ['id', 'name', 'password', 'extra', 'enabled', 'project_id']
+    _attributes = ['id', 'name', 'password', 'extra', 'enabled', 'project_id', 'domain_id']
 
     id = Column(String(64), primary_key=True, nullable=False, index=True)
     name = Column(String(64), nullable=False, index=True, unique=True)
     password = Column(String(64), nullable=False)
     extra = Column(Text)
     enabled = Column(SmallInteger)
-    project_id = Column(ForeignKey("project.id"), nullable=False)
+    project_id = Column(ForeignKey("project.id"))
+    domain_id = Column(ForeignKey("domain.id"), nullable=False)
 
     user_group_membership = relationship("UserGroupMembership", backref="user", cascade="all")
     user_role_membership = relationship("UserRoleMembership", backref="user", cascade="all")
 
     def __repr__(self):
-        return "<User(id='%s', name='%s', project_id='%s', extra='%s', enabled='%s')>" % (
-                   self.id, self.name, self.project_id, self.extra, self.enabled)
+        return "<User(id='%s', name='%s', project_id='%s', domain_id='%s', extra='%s', enabled='%s')>" % (
+                   self.id, self.name, self.project_id, self.domain_id, self.extra, self.enabled)
 
 
 class Group(Base, BaseDict):
@@ -139,6 +141,7 @@ class Role(Base, BaseDict):
 
 class UserGroupMembership(Base, BaseDict):
     __tablename__ = "user_group_membership"
+    _attributes = ['user_id', 'group_id']
 
     user_id = Column(ForeignKey("user.id", ondelete="CASCADE", onupdate="CASCADE"), primary_key=True)
     group_id = Column(ForeignKey("group.id", ondelete="CASCADE", onupdate="CASCADE"), primary_key=True)
@@ -149,6 +152,7 @@ class UserGroupMembership(Base, BaseDict):
 
 class UserRoleMembership(Base, BaseDict):
     __tablename__ = "user_role_membership"
+    _attributes = ['user_id', 'role_id']
 
     user_id = Column(ForeignKey("user.id", ondelete="CASCADE", onupdate="CASCADE"), primary_key=True)
     role_id = Column(ForeignKey("role.id", ondelete="CASCADE", onupdate="CASCADE"), primary_key=True)
@@ -159,6 +163,7 @@ class UserRoleMembership(Base, BaseDict):
 
 class GroupRoleMembership(Base, BaseDict):
     __tablename__ = "group_role__membership"
+    _attributes = ['group_id', 'role_id']
 
     group_id = Column(ForeignKey("group.id", ondelete="CASCADE", onupdate="CASCADE"), primary_key=True)
     role_id = Column(ForeignKey("role.id", ondelete="CASCADE", onupdate="CASCADE"), primary_key=True)

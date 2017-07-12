@@ -387,3 +387,45 @@ class RoleApi(object):
             ref = self._get_role(role_id)
             urms = ref.group_role_membership
             return [urm.to_dict() for urm in urms if urm]
+
+
+class RelationshipApi(object):
+
+    def __init__(self, session):
+        self.session = session
+
+    def bind_user_to_group(self, user_id, group_id):
+        with self.session.begin():
+            try:
+                user_group_membership = UserGroupMembership.from_dict(
+                    {"user_id": user_id, "group_id": group_id})
+                self.session.add(user_group_membership)
+                self.session.flush()
+            except IntegrityError as e:
+                raise exception.Conflict(
+                    type="UserGroupMembership",
+                    details=user_id +":" + group_id + ":" + e.message)
+
+    def bind_role_to_user(self, role_id, user_id):
+        with self.session.begin():
+            try:
+                user_role_membership = UserRoleMembership.from_dict(
+                    {"user_id": user_id, "role_id": role_id})
+                self.session.add(user_role_membership)
+                self.session.flush()
+            except IntegrityError as e:
+                raise exception.Conflict(
+                    type="UserRoleMembership",
+                    details=user_id +":" + role_id + ":" + e.message)
+
+    def bind_role_to_group(self, role_id, group_id):
+        with self.session.begin():
+            try:
+                group_role_membership = GroupRoleMembership.from_dict(
+                    {"group_id": group_id, "role_id": role_id})
+                self.session.add(group_role_membership)
+                self.session.flush()
+            except IntegrityError as e:
+                raise exception.Conflict(
+                    type="GroupRoleMembership",
+                    details=group_id +":" + role_id + ":" + e.message)

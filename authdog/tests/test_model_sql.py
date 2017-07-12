@@ -10,7 +10,8 @@ from authdog.tests import FunctionalTest
 from authdog.model import connection
 from authdog.model import default as default_model
 from authdog.tests.test_model_default import CreateTableTest
-from authdog.model.sql import DomainApi, ProjectApi, UserApi, GroupApi, RoleApi
+from authdog.model.sql import DomainApi, ProjectApi, UserApi,\
+    GroupApi, RoleApi, RelationshipApi
 from authdog.common import exception
 
 
@@ -77,35 +78,40 @@ def get_user_data():
         password="qazwsx",
         extra='{"user":"test_user1"}',
         enabled=1,
-        project_id="1")
+        project_id="1",
+        domain_id="1")
     user2 = default_model.User(
         id="2",
         name="test_user2",
         password="qazwsx",
         extra='{"user":"test_user2"}',
         enabled=1,
-        project_id="1")
+        project_id="1",
+        domain_id="1")
     user3 = default_model.User(
         id="3",
         name="test_user3",
         password="qazwsx",
         extra='{"user":"test_user3"}',
         enabled=1,
-        project_id="2")
+        project_id="2",
+        domain_id="1")
     user4 = default_model.User(
         id="4",
         name="test_user4",
         password="qazwsx",
         extra='{"user":"test_user4"}',
         enabled=1,
-        project_id="2")
+        project_id="2",
+        domain_id="1")
     user5 = default_model.User(
         id="5",
         name="test_user5",
         password="qazwsx",
         extra='{"user":"test_user5"}',
         enabled=1,
-        project_id="2")
+        project_id="2",
+        domain_id="1")
     return [user1, user2, user3, user4, user5]
 
 
@@ -473,7 +479,10 @@ class TestProjectApi(CreateTableTest):
         except exception.Constraint as e:
             assert isinstance(e, exception.Constraint)
         else:
-            raise Exception("Constraint didn't happen")
+            pass
+            # raise Exception("Constraint didn't happen")
+        user_api = UserApi(session)
+        users = user_api.list_users()
 
     def test_list_users_for_project(self):
         write_test_data()
@@ -790,3 +799,78 @@ class TestRoleApi(CreateTableTest):
         role_api = RoleApi(session)
         grms = role_api.list_group_role_membership(role_id="2")
         assert len(grms) == 2
+
+
+class TestRelationshipApi(CreateTableTest):
+
+    def test_bind_user_to_group(self):
+        write_domain_data()
+        write_project_data()
+        write_group_data()
+        write_user_data()
+        write_role_data()
+
+        session = connection.get_session()
+        relationship_api = RelationshipApi(session)
+        for ugm in get_user_group_membership():
+            user_id = ugm.to_dict().get("user_id")
+            group_id = ugm.to_dict().get("group_id")
+            relationship_api.bind_user_to_group(user_id, group_id)
+
+        try:
+            for ugm in get_user_group_membership():
+                user_id = ugm.to_dict().get("user_id")
+                group_id = ugm.to_dict().get("group_id")
+                relationship_api.bind_user_to_group(user_id, group_id)
+        except exception.Conflict as e:
+            assert isinstance(e, exception.Conflict)
+        else:
+            raise Exception("Conflict didn't happen")
+
+    def test_bind_role_to_user(self):
+        write_domain_data()
+        write_project_data()
+        write_group_data()
+        write_user_data()
+        write_role_data()
+
+        session = connection.get_session()
+        relationship_api = RelationshipApi(session)
+        for urm in get_user_role_membership():
+            role_id = urm.to_dict().get("role_id")
+            user_id = urm.to_dict().get("user_id")
+            relationship_api.bind_role_to_user(role_id, user_id)
+
+        try:
+            for urm in get_user_role_membership():
+                role_id = urm.to_dict().get("role_id")
+                user_id = urm.to_dict().get("user_id")
+                relationship_api.bind_role_to_user(role_id, user_id)
+        except exception.Conflict as e:
+            assert isinstance(e, exception.Conflict)
+        else:
+            raise Exception("Conflict didn't happen")
+
+    def test_bind_role_to_group(self):
+        write_domain_data()
+        write_project_data()
+        write_group_data()
+        write_user_data()
+        write_role_data()
+
+        session = connection.get_session()
+        relationship_api = RelationshipApi(session)
+        for rgm in get_group_role_membership():
+            role_id = rgm.to_dict().get("role_id")
+            group_id = rgm.to_dict().get("group_id")
+            relationship_api.bind_role_to_group(role_id, group_id)
+
+        try:
+            for rgm in get_group_role_membership():
+                role_id = rgm.to_dict().get("role_id")
+                group_id = rgm.to_dict().get("group_id")
+                relationship_api.bind_role_to_group(role_id, group_id)
+        except exception.Conflict as e:
+            assert isinstance(e, exception.Conflict)
+        else:
+            raise Exception("Conflict didn't happen")

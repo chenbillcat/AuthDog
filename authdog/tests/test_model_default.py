@@ -57,14 +57,16 @@ class TestCreateDefaultTables(CreateTableTest):
             password="qazwsx",
             extra='{"extra0":"extra0"}',
             enabled=1,
-            project_id=project.id)
+            project_id=project.id,
+            domain_id=domain.id)
         user1 = default_model.User(
             id="2",
             name="test_user2",
             password="qazwsx",
             extra='{"hello":"world"}',
             enabled=1,
-            project_id=project.id)
+            project_id=project.id,
+            domain_id=domain.id)
 
         group = default_model.Group(
             id="1",
@@ -120,6 +122,7 @@ class TestCreateDefaultTables(CreateTableTest):
             extra={"extra0":1},
             enabled=1,
             project_id=project.id,
+            domain_id=domain.id,
             extra1="extra1",
             extra2="extra2")
         # user3 = from_dict(default_model.User, user3)

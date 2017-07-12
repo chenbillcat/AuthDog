@@ -827,6 +827,11 @@ class TestRelationshipApi(CreateTableTest):
         else:
             raise Exception("Conflict didn't happen")
 
+        ugms = session.query(default_model.UserGroupMembership).all()
+        assert len(ugms) == 4
+        # for u in ugms:
+        #    print u.to_dict()
+
     def test_bind_role_to_user(self):
         write_domain_data()
         write_project_data()
@@ -851,6 +856,11 @@ class TestRelationshipApi(CreateTableTest):
         else:
             raise Exception("Conflict didn't happen")
 
+        urms = session.query(default_model.UserRoleMembership).all()
+        assert len(urms) == 5
+        # for u in urms:
+        #    print u.to_dict()
+
     def test_bind_role_to_group(self):
         write_domain_data()
         write_project_data()
@@ -874,3 +884,8 @@ class TestRelationshipApi(CreateTableTest):
             assert isinstance(e, exception.Conflict)
         else:
             raise Exception("Conflict didn't happen")
+
+        grms = session.query(default_model.GroupRoleMembership).all()
+        assert len(grms) == 5
+        # for g in grms:
+        #    print g.to_dict()

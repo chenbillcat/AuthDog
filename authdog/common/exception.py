@@ -43,7 +43,7 @@ class JsonError(Error):
 
 class Constraint(Error):
     message_format = "a foreign key constraint fails when delete: %(type)s: %(details)s"
-    code = 500
+    code = 409
     title = 'constraint'
 
 

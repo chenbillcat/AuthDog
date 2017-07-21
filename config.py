@@ -41,11 +41,12 @@ logging = {
             '()': 'pecan.log.ColorFormatter',
             'format': ('%(asctime)s [%(padded_color_levelname)s] [%(name)s]'
                        '[%(threadName)s] %(message)s'),
-        '__force_dict__': True
+            '__force_dict__': True
         }
     }
 }
 
+EVENTLET = {'enabled': True}
 # Custom Configurations must be in Python dictionary format::
 #
 # foo = {'bar':'baz'}

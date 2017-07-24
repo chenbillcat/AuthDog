@@ -21,6 +21,11 @@ def identify_with_password(context=None, *args, **kwargs):
                 }
             }
         }
+
+    :param context: context is the data from request: context = request.POST.get("auth")
+    :param args:
+    :param kwargs:
+    :return:
     """
     identity = context.get("identity")
     method = identity.get("methods")

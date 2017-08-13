@@ -20,7 +20,7 @@ app = {
 logging = {
     'root': {'level': 'INFO', 'handlers': ['console']},
     'loggers': {
-        'authdog': {'level': 'DEBUG', 'handlers': ['console'], 'propagate': False},
+        'authdog': {'level': 'DEBUG', 'handlers': ['applogfile'], 'propagate': False},
         'pecan': {'level': 'DEBUG', 'handlers': ['console'], 'propagate': False},
         'py.warnings': {'handlers': ['console']},
         '__force_dict__': True
@@ -30,6 +30,14 @@ logging = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'color'
+        },
+        'applogfile':{
+            'level': 'DEBUG',
+            #'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'color',
+            'filename': '/var/log/authdog/authdog.log',
+            'backupCount': 5
         }
     },
     'formatters': {
@@ -39,13 +47,14 @@ logging = {
         },
         'color': {
             '()': 'pecan.log.ColorFormatter',
-            'format': ('%(asctime)s [%(padded_color_levelname)s] [%(name)s]'
-                       '[%(threadName)s] %(message)s'),
+            'format': ('%(asctime)s :: %(levelname)s :: %(name)s '
+                       ':: %(threadName)s :: %(message)s'),
             '__force_dict__': True
         }
     }
 }
 
+SECREATE_KEY = "capsCrmRong"
 EVENTLET = {'enabled': True}
 # Custom Configurations must be in Python dictionary format::
 #
